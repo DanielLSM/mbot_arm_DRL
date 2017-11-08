@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package>
-  <name>acrobat_env_wrapper</name>
+  <name>mbot_env_wrapper</name>
   <version>1.0.0</version>
   <description>
     This pkg with a ROS wrapper around acrobat gazebo.
@@ -10,10 +10,9 @@
 
   <license>GPLv3</license>
 
-  <author email="olima@isr.tecnico.ulisboa.pt">Oscar Lima</author>
   <author email="daniellsmarta@gmail.com">Daniel Marta</author>
 
-  <maintainer email="olima@isr.tecnico.ulisboa.pt">Oscar Lima</maintainer>
+  <maintainer email="daniellsmarta@gmail.com">Daniel Marta</maintainer>
 
   <buildtool_depend>catkin</buildtool_depend>
 

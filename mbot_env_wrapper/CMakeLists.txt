@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(acrobat_env_wrapper)
+project(mbot_env_wrapper)
 
 find_package(catkin REQUIRED
  COMPONENTS
