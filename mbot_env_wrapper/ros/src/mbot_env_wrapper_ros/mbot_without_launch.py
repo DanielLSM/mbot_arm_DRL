@@ -26,11 +26,11 @@ import random
 
 
 
-class GazeboAcrobatEnv(GazeboEnv):
+class GazeboMbotEnv(GazeboEnv):
 
     def __init__(self):
         # Launch the simulation with the given launchfile name
-        #GazeboEnv.__init__(self, "robot.launch",log = "rospy.FATAL")
+        GazeboEnv.__init__(self, "robot.launch",log = "rospy.FATAL")
 
         # Topic to publish torque
         # self.torque_pub = rospy.Publisher('/acrobat/joint1/effort/command', Float32, queue_size=5)
