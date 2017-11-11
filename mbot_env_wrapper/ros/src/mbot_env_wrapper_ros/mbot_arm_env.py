@@ -66,7 +66,8 @@ class GazeboMbotEnv(GazeboEnv):
         Uses /gazebo/set_model_configuration to set a position in the acrobat without using any controllers
         '''
         # call service /gazebo/set_model_configuration
-        return self.set_joint1_angle_service('mbot', 'robot_description', ['left_arm_joint0'], [angle]) 
+        return self.set_joint1_angle_service('mbot', 'robot_description',   ['left_arm_joint0','left_arm_joint1','left_arm_joint2','left_arm_joint3','left_arm_joint4','left_arm_joint5','left_arm_joint6'], [angle[0],angle[1],angle[2],angle[3],angle[4],angle[5],angle[6]]
+                                                                          ) 
 
     @property
     def get_arm_data(self):
@@ -106,7 +107,7 @@ class GazeboMbotEnv(GazeboEnv):
         return angle
 
 
-    def publish_torque(self, torque):
+    def publish_velocities(self, velocities):
         self.torque_pub.publish(data=torque)
         rospy.sleep(0.1)
         data = None
