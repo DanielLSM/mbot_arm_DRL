@@ -66,7 +66,7 @@ class GazeboMbotEnv(GazeboEnv):
         Uses /gazebo/set_model_configuration to set a position in the acrobat without using any controllers
         '''
         # call service /gazebo/set_model_configuration
-        return self.set_joint1_angle_service('acrobat', 'robot_description', ['joint1'], [angle]) 
+        return self.set_joint1_angle_service('mbot', 'robot_description', ['left_arm_joint0'], [angle]) 
 
     @property
     def get_arm_data(self):
