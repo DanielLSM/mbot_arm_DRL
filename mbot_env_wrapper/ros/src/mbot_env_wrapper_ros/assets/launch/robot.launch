@@ -44,6 +44,8 @@
           -J left_arm_joint3 0.92
           -J left_arm_joint4 0.24
           -J left_arm_joint5 0.63
-          -J left_arm_joint6 0.44" />
+          -J left_arm_joint6 0.44">
+          <remap from="joint_states" to="top_kek"/>
+    </node>
 
 </launch>
