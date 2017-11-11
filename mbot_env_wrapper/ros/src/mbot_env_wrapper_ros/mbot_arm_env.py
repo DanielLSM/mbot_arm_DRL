@@ -69,7 +69,7 @@ class GazeboMbotEnv(GazeboEnv):
         return self.set_joint1_angle_service('acrobat', 'robot_description', ['joint1'], [angle]) 
 
     @property
-    def get_angle(self):
+    def get_arm_data(self):
         data = None
         while data is None:
             try:
