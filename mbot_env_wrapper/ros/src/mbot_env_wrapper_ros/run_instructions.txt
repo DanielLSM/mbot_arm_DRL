@@ -1,3 +1,5 @@
 from mbot_env_wrapper_ros.mbot_arm_env import GazeboMbotEnv as gg
 
 roslaunch mbot_simulation robot.launch
+
+rosrun tf static_transform_publisher 0 0.9 0.6 0 0 0 1 odom my_goal 50
