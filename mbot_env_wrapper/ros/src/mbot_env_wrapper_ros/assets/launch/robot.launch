@@ -48,4 +48,7 @@
           <remap from="joint_states" to="top_kek"/>
     </node>
 
+    <node name="goal_node" pkg="tf" type="static_transform_publisher"
+          args="0 0.9 0.6 0 0 0 1 odom my_goal 50"/>
+
 </launch>
