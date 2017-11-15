@@ -1,1 +1,3 @@
 from mbot_env_wrapper_ros.mbot_arm_env import GazeboMbotEnv as gg
+
+roslaunch mbot_simulation robot.launch
