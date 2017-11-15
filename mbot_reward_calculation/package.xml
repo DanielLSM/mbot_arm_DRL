@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package>
+    <name>mbot_reward_calculation</name>
+    <version>1.0.0</version>
+    <description>
+        tf echo between odom and my_goal, then publish euclidean distance
+        in a topic with type std_msgs/Float32. This information can be used
+        as a reward in learning algorithms.
+    </description>
+
+    <license>GPLv3</license>
+
+    <author email="daniellsmarta@gmail.com">Daniel Marta</author>
+    <maintainer email="daniellsmarta@gmail.com">Daniel Marta</maintainer>
+
+    <buildtool_depend>catkin</buildtool_depend>
+    <build_depend>roscpp</build_depend>
+    <build_depend>std_msgs</build_depend>
+    <build_depend>tf</build_depend>
+    
+    <run_depend>roscpp</run_depend>
+    <run_depend>std_msgs</run_depend>
+    <run_depend>tf</run_depend>
+
+</package>
