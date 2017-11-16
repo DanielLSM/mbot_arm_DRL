@@ -14,7 +14,7 @@
 
 #define _USE_MATH_DEFINES
 
-#include <acrobat_reward_calculation/tf_euclidean_distance.h>
+#include <mbot_reward_calculation/tf_euclidean_distance.h>
 
 TFEuclideanDistance::TFEuclideanDistance(): nh_("~")
 {

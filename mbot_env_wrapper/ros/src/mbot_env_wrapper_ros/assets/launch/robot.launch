@@ -49,6 +49,13 @@
     </node>
 
     <node name="goal_node" pkg="tf" type="static_transform_publisher"
-          args="0 0.9 0.6 0 0 0 1 odom my_goal 50"/>
+          args="0.043 0.879 0.620 0 0 0 1 odom my_goal 50"/>
+
+  <!-- tf echo between goal_link and link3, then publish euclidean distance -->
+  <node pkg="mbot_reward_calculation" type="tf_euclidean_distance"
+        name="tf_euclidean_distance_node" output="screen" >
+    <param name="target_frame_id" value="left_arm_virtual_endeffector" />
+    <param name="reference_frame_id" value="my_goal"/>
+  </node>
 
 </launch>

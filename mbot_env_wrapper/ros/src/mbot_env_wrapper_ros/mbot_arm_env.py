@@ -32,11 +32,11 @@ class GazeboMbotEnv(GazeboEnv):
         # Launch the simulation with the given launchfile name
         GazeboEnv.__init__(self, "robot.launch",log = "rospy.FATAL")
 
-        # Topic to publish torque
+        # Topic to publish velocity in each joint 
         # self.torque_pub = rospy.Publisher('/acrobat/joint1/effort/command', Float32, queue_size=5)
 
         #Topic to read the state of the joint
-        self.joint_state = rospy.Subscriber('/joint_states', JointState)
+        # self.joint_state = rospy.Subscriber('/joint_states', JointState)
 
         # Gazebo Service that resets simulation
         rospy.wait_for_service('/gazebo/reset_simulation')
@@ -56,7 +56,7 @@ class GazeboMbotEnv(GazeboEnv):
         angus = rospy.ServiceProxy('/gazebo/set_model_configuration', SetModelConfiguration)
         self.set_joint1_angle_service = angus
 
-        self.action_space = Box(low=-10, high=10, shape=(1,))
+        self.action_space = Box(low=-10, high=10, shape=(7,))
         self.reward_range = (-np.inf, np.inf)
 
         self._seed()
@@ -89,6 +89,7 @@ class GazeboMbotEnv(GazeboEnv):
         l.append(np.cos(angle[0]))
         l.append(np.sin(angle[0]))
         l.append(velocity[0])
+        l.append(m[])
         return np.asarray(l)
 
     @property
