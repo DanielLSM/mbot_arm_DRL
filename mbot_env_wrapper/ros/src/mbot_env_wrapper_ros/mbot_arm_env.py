@@ -16,7 +16,7 @@ from gym.utils import seeding
 
 from gazebo_env_baseclass import GazeboEnv
 
-from std_msgs.msg import Float32
+from std_msgs.msg import Float64
 
 from sensor_msgs.msg import JointState 
 
@@ -33,6 +33,15 @@ class GazeboMbotEnv(GazeboEnv):
         GazeboEnv.__init__(self, "robot.launch",log = "rospy.FATAL")
 
         # Topic to publish velocity in each joint 
+        self.joint_vel0 = rospy.Publisher('/left_arm_joint0_velocity_controller/command', Float64, queue_size=1)
+        self.joint_vel1 = rospy.Publisher('/left_arm_joint1_velocity_controller/command', Float64, queue_size=1)
+        self.joint_vel2 = rospy.Publisher('/left_arm_joint2_velocity_controller/command', Float64, queue_size=1)
+        self.joint_vel3 = rospy.Publisher('/left_arm_joint3_velocity_controller/command', Float64, queue_size=1)
+        self.joint_vel4 = rospy.Publisher('/left_arm_joint4_velocity_controller/command', Float64, queue_size=1)
+        self.joint_vel5 = rospy.Publisher('/left_arm_joint5_velocity_controller/command', Float64, queue_size=1)
+        self.joint_vel6 = rospy.Publisher('/left_arm_joint6_velocity_controller/command', Float64, queue_size=1)
+
+
         # self.torque_pub = rospy.Publisher('/acrobat/joint1/effort/command', Float32, queue_size=5)
 
         #Topic to read the state of the joint
@@ -56,7 +65,7 @@ class GazeboMbotEnv(GazeboEnv):
         angus = rospy.ServiceProxy('/gazebo/set_model_configuration', SetModelConfiguration)
         self.set_joint1_angle_service = angus
 
-        self.action_space = Box(low=-10, high=10, shape=(7,))
+        self.action_space = Box(low=-1, high=1, shape=(7,))
         self.reward_range = (-np.inf, np.inf)
 
         self._seed()
@@ -89,7 +98,25 @@ class GazeboMbotEnv(GazeboEnv):
         l.append(np.cos(angle[0]))
         l.append(np.sin(angle[0]))
         l.append(velocity[0])
-        l.append(m[])
+        l.append(np.cos(angle[1]))
+        l.append(np.sin(angle[1]))
+        l.append(velocity[1])
+        l.append(np.cos(angle[2]))
+        l.append(np.sin(angle[2]))
+        l.append(velocity[2])
+        l.append(np.cos(angle[3]))
+        l.append(np.sin(angle[3]))
+        l.append(velocity[3])
+        l.append(np.cos(angle[4]))
+        l.append(np.sin(angle[4]))
+        l.append(velocity[4])
+        l.append(np.cos(angle[5]))
+        l.append(np.sin(angle[5]))
+        l.append(velocity[5])
+        l.append(np.cos(angle[6]))
+        l.append(np.sin(angle[6]))
+        l.append(velocity[6])
+
         return np.asarray(l)
 
     @property
@@ -99,27 +126,36 @@ class GazeboMbotEnv(GazeboEnv):
         self.pause
         return r
 
+    # Not needed because there are never angles superior to pi like we had in the acrobat
+    #@property
+    #def get_angle_server(self):
+    #    self.unpause
+    #    state = self.get_state
+    #    angle = np.arccos(state[0])
+    #    self.pause
+    #    return angle
+
     @property
-    def get_angle_server(self):
-        self.unpause
-        state = self.get_state
-        angle = np.arccos(state[0])
-        self.pause
-        return angle
-
-
-    def publish_velocities(self, velocities):
-        self.torque_pub.publish(data=torque)
-        rospy.sleep(0.1)
+    def get_reward_euclidean(self):
         data = None
         while data is None:
             try:
-                data = rospy.wait_for_message('/joint_states', JointState, timeout=5)
+                data = rospy.wait_for_message('/tf_euclidean_distance_node/euclidean_distance', Float64, timeout=1)
             except:
                 pass
-        rospy.loginfo("I heard {}".format(data.effort))
-        rospy.loginfo("Number of connections {}".format(self.torque_pub.get_num_connections()))
+        return data
 
+
+    def publish_velocities(self, velocities):
+        #self.torque_pub.publish(data=torque)
+        self.joint_vel0.publish(data=velocities[0])
+        self.joint_vel1.publish(data=velocities[1])
+        self.joint_vel2.publish(data=velocities[2])
+        self.joint_vel3.publish(data=velocities[3])
+        self.joint_vel4.publish(data=velocities[4])
+        self.joint_vel5.publish(data=velocities[5])
+        self.joint_vel6.publish(data=velocities[6])
+        rospy.sleep(0.1)
 
     # Defines a seed
     def seed(self, seed=None):
@@ -132,17 +168,17 @@ class GazeboMbotEnv(GazeboEnv):
         self.unpause
         self.publish_torque(action[0])
         state = self.get_state
+        reward = self.get_reward_euclidean
         self.pause
-        reward = self.reward(state,action)
         done = False
+        reward_alternative = self.reward(reward)
 
-        return state, reward, done
+        return state, reward_alternative, done
 
 
-    def reward(self,state,action):
-        angle = np.arccos(state[0])
+    def reward(self,reward):
         #print("Current angle is {}".format(angle))
-        return -1 * (angle**2 + 0.1*state[2]**2 + 0.001*action[0]**2)
+        return -10 * (reward**2)
 
     # Resets
     @property
@@ -159,8 +195,17 @@ class GazeboMbotEnv(GazeboEnv):
         self.unpause
         
         # Reset Topic
-        self.torque_pub.publish(data=0)
-        self.setJointAngle(random.uniform(-3.1415, 3.1415))
+        l=[0.0,1.18,0.12,0.92,0.24,0.63,0.44]
+        #l=[random.uniform(-1, 1),
+        #   random.uniform(-1, 1),
+        #   random.uniform(-1, 1),
+        #   random.uniform(-1, 1),
+        #   random.uniform(-1, 1),
+        #   random.uniform(-1, 1),
+        #   random.uniform(-1, 1)]
+        #random.uniform(-3.1415, 3.1415)
+        self.setJointAngle(l)
+        self.publish_velocities([0.0,0.0,0.0,0.0,0.0,0.0,0.0])
         
         # Read joint states
         state = self.get_state
