@@ -16,7 +16,7 @@ from gym.utils import seeding
 
 from gazebo_env_baseclass import GazeboEnv
 
-from std_msgs.msg import Float64
+from std_msgs.msg import Float64,Float32
 
 from sensor_msgs.msg import JointState 
 
@@ -33,13 +33,13 @@ class GazeboMbotEnv(GazeboEnv):
         GazeboEnv.__init__(self, "robot.launch",log = "rospy.FATAL")
 
         # Topic to publish velocity in each joint 
-        self.joint_vel0 = rospy.Publisher('/left_arm_joint0_velocity_controller/command', Float64, queue_size=1)
-        self.joint_vel1 = rospy.Publisher('/left_arm_joint1_velocity_controller/command', Float64, queue_size=1)
-        self.joint_vel2 = rospy.Publisher('/left_arm_joint2_velocity_controller/command', Float64, queue_size=1)
-        self.joint_vel3 = rospy.Publisher('/left_arm_joint3_velocity_controller/command', Float64, queue_size=1)
-        self.joint_vel4 = rospy.Publisher('/left_arm_joint4_velocity_controller/command', Float64, queue_size=1)
-        self.joint_vel5 = rospy.Publisher('/left_arm_joint5_velocity_controller/command', Float64, queue_size=1)
-        self.joint_vel6 = rospy.Publisher('/left_arm_joint6_velocity_controller/command', Float64, queue_size=1)
+        self.joint_vel0 = rospy.Publisher('/left_arm_joint0_velocity_controller/command', Float64, queue_size=5)
+        self.joint_vel1 = rospy.Publisher('/left_arm_joint1_velocity_controller/command', Float64, queue_size=5)
+        self.joint_vel2 = rospy.Publisher('/left_arm_joint2_velocity_controller/command', Float64, queue_size=5)
+        self.joint_vel3 = rospy.Publisher('/left_arm_joint3_velocity_controller/command', Float64, queue_size=5)
+        self.joint_vel4 = rospy.Publisher('/left_arm_joint4_velocity_controller/command', Float64, queue_size=5)
+        self.joint_vel5 = rospy.Publisher('/left_arm_joint5_velocity_controller/command', Float64, queue_size=5)
+        self.joint_vel6 = rospy.Publisher('/left_arm_joint6_velocity_controller/command', Float64, queue_size=5)
 
 
         # self.torque_pub = rospy.Publisher('/acrobat/joint1/effort/command', Float32, queue_size=5)
@@ -91,7 +91,7 @@ class GazeboMbotEnv(GazeboEnv):
 
     @property
     def get_state(self):
-        data = self.get_angle
+        data = self.get_arm_data
         angle = data.position
         velocity = data.velocity
         l = []
@@ -140,7 +140,7 @@ class GazeboMbotEnv(GazeboEnv):
         data = None
         while data is None:
             try:
-                data = rospy.wait_for_message('/tf_euclidean_distance_node/euclidean_distance', Float64, timeout=1)
+                data = rospy.wait_for_message('/tf_euclidean_distance_node/euclidean_distance', Float32, timeout=1)
             except:
                 pass
         return data
@@ -170,15 +170,16 @@ class GazeboMbotEnv(GazeboEnv):
         state = self.get_state
         reward = self.get_reward_euclidean
         self.pause
-        done = False
         reward_alternative = self.reward(reward)
+        done = False
 
         return state, reward_alternative, done
 
 
     def reward(self,reward):
         #print("Current angle is {}".format(angle))
-        return -10 * (reward**2)
+        #return -10 * (reward**2)
+        return -1 *(reward)
 
     # Resets
     @property
