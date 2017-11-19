@@ -47,6 +47,10 @@ class GazeboMbotEnv(GazeboEnv):
         #Topic to read the state of the joint
         # self.joint_state = rospy.Subscriber('/joint_states', JointState)
 
+        # Reset clock simulation
+        rospy.wait_for_service('/reset_clock')
+        self.reset_clock = rospy.ServiceProxy('/reset_clock', Empty)
+
         # Gazebo Service that resets simulation
         rospy.wait_for_service('/gazebo/reset_simulation')
         self.reset_proxy = rospy.ServiceProxy('/gazebo/reset_simulation', Empty)
@@ -180,7 +184,7 @@ class GazeboMbotEnv(GazeboEnv):
     def reward(self,reward):
         #print("Current angle is {}".format(angle))
         #return -10 * (reward**2)
-        return -1 *(reward)
+        return reward
 
     # Resets
     @property
@@ -240,6 +244,15 @@ class GazeboMbotEnv(GazeboEnv):
             self.fora_pausa()
         except (rospy.ServiceException) as e:
             print ("/gazebo/unpause_physics service call failed")
+
+    # Reset clock
+    @property
+    def reset_le_clock(self):
+        rospy.wait_for_service('/reset_clock')
+        try:
+            self.reset_clock()
+        except (rospy.ServiceException) as e:
+            print ("/reset_clock service call failed")
 
     
 
