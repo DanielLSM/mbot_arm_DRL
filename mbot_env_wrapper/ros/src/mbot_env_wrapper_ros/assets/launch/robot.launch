@@ -33,7 +33,7 @@
     <include file="$(find mbot_bringup)/ros/launch/components/real_sim_common_components.launch" />
 
     <!-- mbot base, head and arm controllers (ROS control) -->
-    <include file="$(find mbot_gazebo_control)/ros/launch/mbot_control.launch" />
+    <include file="$(find mbot_gazebo_control)/ros/launch/mbot_control.launch"/>
 
     <!-- spawn mbot (in a certain position and with a default arm configuration) -->
     <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
@@ -45,7 +45,6 @@
           -J left_arm_joint4 0.24
           -J left_arm_joint5 0.63
           -J left_arm_joint6 0.44">
-          <remap from="joint_states" to="top_kek"/>
     </node>
 
     <node name="goal_node" pkg="tf" type="static_transform_publisher"

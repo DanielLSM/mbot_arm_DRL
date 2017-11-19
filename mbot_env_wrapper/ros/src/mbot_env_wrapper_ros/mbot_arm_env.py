@@ -68,6 +68,7 @@ class GazeboMbotEnv(GazeboEnv):
         self.action_space = Box(low=-1, high=1, shape=(7,))
         self.reward_range = (-np.inf, np.inf)
 
+        self.reset
         self._seed()
 
     def setJointAngle(self, angle):
@@ -95,27 +96,27 @@ class GazeboMbotEnv(GazeboEnv):
         angle = data.position
         velocity = data.velocity
         l = []
-        l.append(np.cos(angle[0]))
-        l.append(np.sin(angle[0]))
-        l.append(velocity[0])
-        l.append(np.cos(angle[1]))
-        l.append(np.sin(angle[1]))
-        l.append(velocity[1])
-        l.append(np.cos(angle[2]))
-        l.append(np.sin(angle[2]))
-        l.append(velocity[2])
-        l.append(np.cos(angle[3]))
-        l.append(np.sin(angle[3]))
-        l.append(velocity[3])
-        l.append(np.cos(angle[4]))
-        l.append(np.sin(angle[4]))
-        l.append(velocity[4])
-        l.append(np.cos(angle[5]))
-        l.append(np.sin(angle[5]))
-        l.append(velocity[5])
         l.append(np.cos(angle[6]))
         l.append(np.sin(angle[6]))
         l.append(velocity[6])
+        l.append(np.cos(angle[7]))
+        l.append(np.sin(angle[7]))
+        l.append(velocity[7])
+        l.append(np.cos(angle[8]))
+        l.append(np.sin(angle[8]))
+        l.append(velocity[8])
+        l.append(np.cos(angle[9]))
+        l.append(np.sin(angle[9]))
+        l.append(velocity[9])
+        l.append(np.cos(angle[10]))
+        l.append(np.sin(angle[10]))
+        l.append(velocity[10])
+        l.append(np.cos(angle[11]))
+        l.append(np.sin(angle[11]))
+        l.append(velocity[11])
+        l.append(np.cos(angle[12]))
+        l.append(np.sin(angle[12]))
+        l.append(velocity[12])
 
         return np.asarray(l)
 
@@ -166,7 +167,7 @@ class GazeboMbotEnv(GazeboEnv):
     def step(self, action):
 
         self.unpause
-        self.publish_torque(action[0])
+        self.publish_velocities(action[0])
         state = self.get_state
         reward = self.get_reward_euclidean
         self.pause
